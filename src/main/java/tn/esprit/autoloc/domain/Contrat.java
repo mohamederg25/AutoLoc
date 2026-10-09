@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contrat")
@@ -26,4 +28,12 @@ public class Contrat {
 
     @Column(nullable = false)
     private Boolean valide;
+
+// partie 3 (question 18) : le chargement du contrat charge ses paiements (EAGER)
+    @OneToMany(mappedBy = "contrat", fetch = FetchType.EAGER)
+    private List<Paiement> paiements = new ArrayList<>();
+
+// partie 3 (questions 16/20) : côté inverse de la relation, la clé reste dans reservation
+    @OneToMany(mappedBy = "contrat")
+    private List<Reservation> reservations = new ArrayList<>();
 }

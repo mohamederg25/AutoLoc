@@ -27,4 +27,8 @@ public class Employe {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private RoleEmploye role;
+
+// partie 3 (question 16) : côté propriétaire de la relation Employe <-> Agence
+    @ManyToOne
+    private Agence agence;
 }

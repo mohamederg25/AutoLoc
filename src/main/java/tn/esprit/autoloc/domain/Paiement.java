@@ -27,4 +27,8 @@ public class Paiement {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ModePaiement modePaiement;
+
+// partie 3 (question 18) : côté propriétaire de la relation Paiement <-> Contrat
+    @ManyToOne
+    private Contrat contrat;
 }

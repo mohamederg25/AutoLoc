@@ -26,4 +26,14 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatutReservation statut;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Vehicule vehicule;
+
+    // partie 3 (question 20) : la clé étrangère vers le contrat est dans la table reservation
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Contrat contrat;
 }

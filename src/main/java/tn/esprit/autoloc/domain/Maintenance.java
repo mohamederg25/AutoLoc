@@ -25,4 +25,8 @@ public class Maintenance {
 
     @Column(length = 255)
     private String description;
+
+// partie 3 (question 19) : la clé étrangère vers le véhicule est dans la table maintenance
+    @ManyToOne
+    private Vehicule vehicule;
 }
