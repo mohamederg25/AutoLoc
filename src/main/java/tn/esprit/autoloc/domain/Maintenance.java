@@ -2,8 +2,7 @@ package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.time.*;
 
 @Entity
 @Table(name = "maintenance")
@@ -17,16 +16,12 @@ public class Maintenance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMaintenance;
 
-    @Column(nullable = false)
     private LocalDate dateDebut;
 
-    @Column(nullable = false)
     private LocalDate dateFin;
 
-    @Column(length = 255)
     private String description;
 
-// partie 3 (question 19) : la clé étrangère vers le véhicule est dans la table maintenance
     @ManyToOne
     private Vehicule vehicule;
 }

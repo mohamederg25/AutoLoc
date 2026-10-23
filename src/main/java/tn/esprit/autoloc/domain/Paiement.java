@@ -2,9 +2,8 @@ package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.math.*;
+import java.time.*;
 
 @Entity
 @Table(name = "paiement")
@@ -18,17 +17,13 @@ public class Paiement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaiement;
 
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal montant;
 
-    @Column(nullable = false)
     private LocalDate datePaiement;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private ModePaiement modePaiement;
 
-// partie 3 (question 18) : côté propriétaire de la relation Paiement <-> Contrat
     @ManyToOne
     private Contrat contrat;
 }
