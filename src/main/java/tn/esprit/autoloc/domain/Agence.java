@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
@@ -24,9 +25,11 @@ public class Agence {
 
     private String telephone;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agence", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Vehicule> vehicules ;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agence")
     private Set<Employe> employes;
 }

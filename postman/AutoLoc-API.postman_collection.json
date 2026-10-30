@@ -1,0 +1,288 @@
+{
+  "info": {
+    "name": "AutoLoc-API",
+    "_postman_id": "a1b2c3d4-0000-4000-8000-000000000002",
+    "description": "Atelier Chapitre 6 - Spring MVC & SpringDoc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Agences",
+      "item": [
+        {
+          "name": "Liste",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Réponse JSON non cyclique\", function () {",
+                  "    pm.response.to.be.json;",
+                  "    pm.expect(pm.response.json()).to.be.an(\"array\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultation-existant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/{{agenceId}}",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "{{agenceId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Identifiant retourné\", function () {",
+                  "    pm.expect(pm.response.json().idAgence).to.eql(Number(pm.collectionVariables.get(\"agenceId\")));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultation-inexistant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "9999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Corps d'erreur JSON\", function () {",
+                  "    pm.expect(pm.response.json().status).to.eql(404);",
+                  "    pm.expect(pm.response.json().error).to.eql(\"Not Found\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ajout-sans-id",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Agence Marsa\",\n  \"ville\": \"La Marsa\",\n  \"adresse\": \"12 Avenue Habib Bourguiba\",\n  \"telephone\": \"71777777\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Identifiant généré\", function () {",
+                  "    const agence = pm.response.json();",
+                  "    pm.expect(agence.idAgence).to.be.a(\"number\");",
+                  "    pm.collectionVariables.set(\"agenceId\", agence.idAgence);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ajout-avec-id",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idAgence\": 1,\n  \"nom\": \"Agence Marsa\",\n  \"ville\": \"La Marsa\",\n  \"adresse\": \"12 Avenue Habib Bourguiba\",\n  \"telephone\": \"71777777\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Modification-existante",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Agence Marsa\",\n  \"ville\": \"La Marsa\",\n  \"adresse\": \"12 Avenue Habib Bourguiba\",\n  \"telephone\": \"71888888\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/{{agenceId}}",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "{{agenceId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Téléphone mis à jour\", function () {",
+                  "    pm.expect(pm.response.json().telephone).to.eql(\"71888888\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Modification-inexistante",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Agence inconnue\",\n  \"ville\": \"Tunis\",\n  \"adresse\": \"1 Rue X\",\n  \"telephone\": \"71000000\"\n}"
+            },
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "9999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Suppression-existante",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/{{agenceId}}",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "{{agenceId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Réponse sans corps\", function () {",
+                  "    pm.expect(pm.response.text()).to.eql(\"\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Suppression-inexistante",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{asiApiUrl}}/agences/9999",
+              "host": ["{{asiApiUrl}}"],
+              "path": ["agences", "9999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Statut 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "asiApiUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "agenceId",
+      "value": "1"
+    }
+  ]
+}
